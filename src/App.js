@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import { Route, Link, Switch } from 'react-router-dom';
+import React from 'react';
+import { Link, Route, Switch } from 'react-router-dom';
 import Home from './Home';
 import About from './About';
 import Profiles from './Profiles';
 import HistorySample from './HistorySample';
-import axios from 'axios';
 import News from './components/News';
-import ColorBox from './components/ColorBox';
-import ColorContext from "./contexts/color";
-import Context from "./components/Context";
+import Context from './components/Context';
+import Counter from './components/Counter';
+import Todos from './components/Todos';
+import CounterContainer from './containers/CounterContainer';
+import TodosContainer from './containers/TodosContainer';
 
 const App = () => {
   return (
@@ -51,6 +52,12 @@ const App = () => {
           )}
         />
       </Switch>
+
+      <div>
+        <CounterContainer />
+        <hr />
+        <TodosContainer />
+      </div>
     </div>
   );
 };
