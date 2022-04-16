@@ -10,6 +10,7 @@ import Counter from './components/Counter';
 import Todos from './components/Todos';
 import CounterContainer from './containers/CounterContainer';
 import TodosContainer from './containers/TodosContainer';
+import Test from './components/Test';
 
 const App = () => {
   return (
@@ -33,6 +34,9 @@ const App = () => {
         <li>
           <Link to="/context">context 예제</Link>
         </li>
+        <li>
+          <Link to="/test">test 예제</Link>
+        </li>
       </ul>
       <hr />
       <Switch>
@@ -42,6 +46,7 @@ const App = () => {
         <Route path="/history" component={HistorySample} />
         <Route path="/news" component={News} />
         <Route path="/context" component={Context} />
+        <Route path="/test" component={Test} />
 
         <Route
           render={({ location }) => (
