@@ -3,33 +3,28 @@ import { createAction, handleActions } from 'redux-actions';
 const INCREASE = 'counter/INCREASE';
 const DECREASE = 'counter/DECREASE';
 
-// export const increase = () => ({ type: 'INCREASE' });
-// export const decrease = () => ({ type: 'DECREASE' });
-
 export const increase = createAction(INCREASE);
 export const decrease = createAction(DECREASE);
 
-const initialState = {
-  number: 0,
+export const increaseAsync = () => (dispatch) => {
+  setTimeout(() => {
+    dispatch(increase());
+  }, 1000);
+};
+export const decreaseAsync = () => (dispatch) => {
+  setTimeout(() => {
+    dispatch(decrease());
+  }, 1000);
 };
 
-const counter2 = handleActions(
+const initialState = 0;
+
+const counter = handleActions(
   {
-    [INCREASE]: (state, action) => ({ number: state.number + 1 }),
-    [DECREASE]: (state, action) => ({ number: state.number - 1 }),
+    [INCREASE]: (state) => state + 1,
+    [DECREASE]: (state) => state - 1,
   },
   initialState,
 );
 
-function counter1(state = initialState, action) {
-  switch (action.type) {
-    case 'INCREASE':
-      return { number: state.number + 1 };
-    case 'DECREASE':
-      return { number: state.number - 1 };
-    default:
-      return state;
-  }
-}
-
-export default counter2;
+export default counter;

@@ -10,11 +10,11 @@ import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import loggerMiddleware from './lib/loggerMiddleware';
 import { createLogger } from 'redux-logger';
-
+import ReduxThunk from 'redux-thunk';
 const logger = createLogger();
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const store = createStore(rootReducer, applyMiddleware(logger));
+const store = createStore(rootReducer,applyMiddleware(logger,ReduxThunk));
 root.render(
   <Provider store={store}>
     <BrowserRouter>

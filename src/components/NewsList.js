@@ -24,6 +24,8 @@ const sampleArticle = {
 };
 
 const NewsList = ({ category }) => {
+
+
   const [loading, res, err] = usePromise(() => {
     const query = category === 'all' ? '' : `&category=${category}`;
     return axios.get(
