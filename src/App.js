@@ -1,13 +1,16 @@
 import React from 'react';
-import Counter from './components/Counter';
-import Todos from './components/Todos';
+import Menu from './components/Menu';
+import { Route } from 'react-router-dom';
+import RedPage from './pages/RedPage';
+import BluePage from './pages/BluePage';
 
 const App = () => {
   return (
     <div>
-      <Counter number={0}/>
+      <Menu />
       <hr />
-      <Todos />
+      <Route path="/red" component={RedPage} />
+      <Route path="/blue" component={BluePage} />
     </div>
   );
 };

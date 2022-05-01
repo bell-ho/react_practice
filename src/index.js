@@ -16,9 +16,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 const store = createStore(rootReducer, composeWithDevTools());
 
 root.render(
-  <Provider store={store}>
+  <BrowserRouter>
     <App />
-  </Provider>,
+  </BrowserRouter>,
 );
 
 reportWebVitals();
