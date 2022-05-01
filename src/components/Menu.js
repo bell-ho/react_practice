@@ -8,7 +8,7 @@ const Menu = () => {
         <Link to="/red">Red</Link>
       </li>
       <li>
-        <Link to="/blue">Red</Link>
+        <Link to="/blue">Blue</Link>
       </li>
     </ul>
   );
