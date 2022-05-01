@@ -1,16 +1,10 @@
 import React from 'react';
-import Menu from './components/Menu';
-import { Route } from 'react-router-dom';
-import RedPage from './pages/RedPage';
-import BluePage from './pages/BluePage';
+import Sample from './components/Sample';
 
 const App = () => {
   return (
     <div>
-      <Menu />
-      <hr />
-      <Route path="/red" component={RedPage} />
-      <Route path="/blue" component={BluePage} />
+      <Sample />
     </div>
   );
 };
