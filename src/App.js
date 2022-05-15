@@ -37,6 +37,9 @@ const App = () => {
     onSuccess: () => {
       queryClient.invalidateQueries('todos');
     },
+    onError: (error) => {
+      console.error(error);
+    },
   });
 
   const add = useCallback(
@@ -51,36 +54,36 @@ const App = () => {
     [saveTodo],
   );
 
+  const removeTodo = useMutation((id) => call(`/todo/${id}`, 'DELETE', null), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('todos');
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
   const onRemove = useCallback(
-    (id) => {
-      setItems(items.filter((item) => item.id !== id));
+    async (id) => {
+      await removeTodo.mutate(id);
     },
-    [items],
+    [removeTodo],
   );
 
+  const toggleTodo = useMutation((data) => call(`/todo`, 'PUT', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('todos');
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
   const onToggle = useCallback(
-    (id) => {
-      setItems(items.map((item) => (item.id === id ? { ...item, done: !item.done } : item)));
+    async (id) => {
+      let data = items.find((item) => item.id === id);
+      data.done = !data.done;
+      await toggleTodo.mutate(data);
     },
-    [items],
-  );
-
-  const onUpdate = useCallback(
-    (newItem) => {
-      const { id, title } = newItem;
-      setItems(
-        items.map((item) =>
-          item.id === id
-            ? {
-                ...item,
-                readOnly: !item.readOnly,
-                title: title,
-              }
-            : item,
-        ),
-      );
-    },
-    [items],
+    [toggleTodo],
   );
 
   return (
@@ -96,7 +99,6 @@ const App = () => {
                   key={idx}
                   onRemove={onRemove}
                   onToggle={onToggle}
-                  onUpdate={onUpdate}
                 />
               ))}
           </List>
