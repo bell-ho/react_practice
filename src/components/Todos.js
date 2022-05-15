@@ -1,64 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeInput, insert, remove, toggle } from '../modules/todos';
+import {
+  Checkbox,
+  IconButton,
+  InputBase,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+} from '@mui/material';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import { DeleteOutlined } from '@mui/icons-material';
 
-export function useTodos() {
-  const dispatch = useDispatch();
-  const { todos, input } = useSelector((state) => state.todos);
+export function useTodos() {}
 
-  const onChangeInput = (input) => {
-    dispatch(changeInput(input));
-  };
-  const onToggle = (id) => {
-    dispatch(toggle(id));
-  };
-  const onRemove = (id) => {
-    dispatch(remove(id));
-  };
-  const onInsert = (text) => {
-    dispatch(insert(text));
-  };
-  return { input, todos, onChangeInput, onToggle, onRemove, onInsert };
-}
-
-export const TodoItem = ({ todo, onToggle, onRemove }) => {
+const Todos = ({ item, onRemove, onToggle, offReadOnlyMode, onUpdate }) => {
   return (
-    <div>
-      <input
-        type="checkbox"
-        onClick={() => onToggle(todo.id)}
-        checked={todo.done}
-        readOnly={true}
-      />
-      <span style={{ textDecoration: todo.done ? 'line-through' : 'none' }}>{todo.text}</span>
-      <button onClick={() => onRemove(todo.id)}>삭제</button>
-    </div>
-  );
-};
-
-const Todos = () => {
-  const { input, todos, onChangeInput, onToggle, onRemove, onInsert } = useTodos();
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    onInsert(input);
-    onChangeInput('');
-  };
-
-  const onChange = (e) => onChangeInput(e.target.value);
-
-  return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <input value={input} onChange={onChange} type="text" />
-        <button type="submit">등록</button>
-      </form>
-      <div>
-        {todos.map((todo) => (
-          <TodoItem todo={todo} key={todo.id} onToggle={onToggle} onRemove={onRemove} />
-        ))}
-      </div>
-    </div>
+    <ListItem>
+      <Checkbox checked={item.done} onChange={() => onToggle(item.id)} />
+      <ListItemText>
+        <InputBase
+          inputProps={{
+            'aria-label': 'naked',
+          }}
+          type="text"
+          id={item.id}
+          name={item.id}
+          value={item.title}
+          fullWidth={true}
+        />
+      </ListItemText>
+      <ListItemSecondaryAction>
+        <IconButton onClick={() => onRemove(item.id)} aria-label="Delete Todo">
+          <DeleteOutlined />
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
   );
 };
 

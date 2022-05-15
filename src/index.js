@@ -10,7 +10,8 @@ import rootReducer, { rootSaga } from './modules';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
-
+import {Hydrate, QueryClient, QueryClientProvider, useQuery} from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 const logger = createLogger();
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const sagaMiddleware = createSagaMiddleware();
@@ -19,11 +20,15 @@ const store = createStore(
   composeWithDevTools(applyMiddleware(logger, sagaMiddleware)),
 );
 sagaMiddleware.run(rootSaga);
+const queryClient = new QueryClient();
 
 root.render(
   <BrowserRouter>
     <Provider store={store}>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </Provider>
   </BrowserRouter>,
 );
