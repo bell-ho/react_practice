@@ -62,14 +62,24 @@ export default function App() {
     }
   };
 
+<<<<<<< HEAD
   // Change the openConfigurator state
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
+=======
+  const queryClient = useQueryClient();
+  const saveTodo = useMutation((newTodo) => call('/todo', 'POST', newTodo), {
+    onSuccess: () => {
+      queryClient.invalidateQueries('todos');
+    },
+  });
+>>>>>>> parent of 8d7fb45 (리액트 쿼리 수정)
 
   // Setting the dir attribute for the body element
   useEffect(() => {
     document.body.setAttribute("dir", direction);
   }, [direction]);
 
+<<<<<<< HEAD
   // Setting page scroll to 0 when changing the route
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -136,5 +146,59 @@ export default function App() {
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
     </ThemeProvider>
+=======
+  const onRemove = useCallback(
+    (id) => {
+      setItems(items.filter((item) => item.id !== id));
+    },
+    [items],
+  );
+
+  const onToggle = useCallback(
+    (id) => {
+      setItems(items.map((item) => (item.id === id ? { ...item, done: !item.done } : item)));
+    },
+    [items],
+  );
+
+  const onUpdate = useCallback(
+    (newItem) => {
+      const { id, title } = newItem;
+      setItems(
+        items.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                readOnly: !item.readOnly,
+                title: title,
+              }
+            : item,
+        ),
+      );
+    },
+    [items],
+  );
+
+  return (
+    <div className="App">
+      <Container maxWidth="md">
+        <AddTodo add={add} />
+        <Paper style={{ margin: 16 }}>
+          <List>
+            {!query.isLoading &&
+              items.map((item, idx) => (
+                <Todos
+                  item={item}
+                  key={idx}
+                  onRemove={onRemove}
+                  onToggle={onToggle}
+                  onUpdate={onUpdate}
+                />
+              ))}
+          </List>
+        </Paper>
+      </Container>
+    </div>
+>>>>>>> parent of 8d7fb45 (리액트 쿼리 수정)
   );
 }
