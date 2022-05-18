@@ -124,6 +124,9 @@ export default function App() {
   );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 11c435e098dd7ffb178054753901c48364a51ad1
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
@@ -148,8 +151,11 @@ export default function App() {
       </Routes>
     </ThemeProvider>
 =======
+<<<<<<< HEAD
 =======
 >>>>>>> parent of 8d7fb45 (리액트 쿼리 수정)
+=======
+>>>>>>> 11c435e098dd7ffb178054753901c48364a51ad1
   const onRemove = useCallback(
     (id) => {
       setItems(items.filter((item) => item.id !== id));
