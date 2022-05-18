@@ -1,9 +1,7 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import "./index.css";
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 import { createLogger } from "redux-logger";
 import { applyMiddleware, createStore } from "redux";
 import rootReducer, { rootSaga } from "./modules";
@@ -15,7 +13,6 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { MaterialUIControllerProvider } from "./context";
 
 const logger = createLogger();
-const root = ReactDOM.createRoot(document.getElementById("root"));
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
   rootReducer,
@@ -24,17 +21,16 @@ const store = createStore(
 sagaMiddleware.run(rootSaga);
 const queryClient = new QueryClient();
 
-root.render(
-  <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+ReactDOM.render(
+  <BrowserRouter>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
         <MaterialUIControllerProvider>
           <App />
         </MaterialUIControllerProvider>
         <ReactQueryDevtools initialIsOpen={false} />
-      </BrowserRouter>
-    </QueryClientProvider>
-  </Provider>
+      </QueryClientProvider>
+    </Provider>
+  </BrowserRouter>,
+  document.getElementById("root")
 );
-
-reportWebVitals();
