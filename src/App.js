@@ -1,90 +1,67 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import Sample from './components/Sample';
+import { useCallback, useEffect, useState } from "react";
 
-import Todos from './components/Todos';
-import { Container, List, Paper } from '@mui/material';
-import AddTodo from './components/AddTodo';
-import { call } from './service/ApiService';
-import { QueryClient, useMutation, useQuery, useQueryClient } from 'react-query';
+// react-router components
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { useQueryClient, useMutation } from "react-query";
+import { call } from "./service/ApiService";
+import Container from "@mui/material/Container";
+import AddTodo from "./components/AddTodo";
+import { Paper } from "@mui/material";
+import List from "@mui/material/List";
+import Todos from "./modules/todos";
 
-export function useTodos() {
-  const getTodos = async () => {
-    const todos = await call('/todo', 'GET', null);
-    return todos;
-  };
-
-  useEffect(() => {
-    getTodos();
-  });
-  const query = useQuery('todos', getTodos);
-
-  return { query };
-}
-
-const App = () => {
-  const { query } = useTodos();
+export default function App() {
+  const { pathname } = useLocation();
 
   const [items, setItems] = useState([]);
 
-  useEffect(() => {
-    if (!query.isLoading) {
-      setItems(query.data.data);
-    }
-  });
-
   const queryClient = useQueryClient();
-  const saveTodo = useMutation((newTodo) => call('/todo', 'POST', newTodo), {
+
+  const saveTodo = useMutation((newTodo) => call("/todo", "POST", newTodo), {
     onSuccess: () => {
-      queryClient.invalidateQueries('todos');
+      queryClient.invalidateQueries("todos");
+    },
+  });
+
+  const removeTodo = useMutation((id) => call(`/todo/${id}`, "DELETE", null), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("todos");
     },
     onError: (error) => {
       console.error(error);
     },
   });
 
-  const add = useCallback(
-    async (title) => {
-      let item = {
-        id: 'ID-' + items.length,
-        title,
-        done: false,
-      };
-      await saveTodo.mutate(item);
-    },
-    [saveTodo],
-  );
-
-  const removeTodo = useMutation((id) => call(`/todo/${id}`, 'DELETE', null), {
-    onSuccess: () => {
-      queryClient.invalidateQueries('todos');
-    },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
-  
   const onRemove = useCallback(
-    async (id) => {
-      await removeTodo.mutate(id);
+    (id) => {
+      setItems(items.filter((item) => item.id !== id));
     },
-    [removeTodo],
+    [items]
   );
 
-  const toggleTodo = useMutation((data) => call(`/todo`, 'PUT', data), {
-    onSuccess: () => {
-      queryClient.invalidateQueries('todos');
-    },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
   const onToggle = useCallback(
-    async (id) => {
-      let data = items.find((item) => item.id === id);
-      data.done = !data.done;
-      await toggleTodo.mutate(data);
+    (id) => {
+      setItems(items.map((item) => (item.id === id ? { ...item, done: !item.done } : item)));
     },
-    [toggleTodo],
+    [items]
+  );
+
+  const onUpdate = useCallback(
+    (newItem) => {
+      const { id, title } = newItem;
+      setItems(
+        items.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                readOnly: !item.readOnly,
+                title: title,
+              }
+            : item
+        )
+      );
+    },
+    [items]
   );
 
   return (
@@ -100,6 +77,7 @@ const App = () => {
                   key={idx}
                   onRemove={onRemove}
                   onToggle={onToggle}
+                  onUpdate={onUpdate}
                 />
               ))}
           </List>
@@ -107,6 +85,4 @@ const App = () => {
       </Container>
     </div>
   );
-};
-
-export default App;
+}
