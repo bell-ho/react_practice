@@ -97,7 +97,7 @@ export default function App() {
   return (
     <>
       {isLoading ? (
-        <div>로딩중</div>
+        <div>로딩중...</div>
       ) : (
         <div className="App">
           {nav}
