@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { changeInput, insert, remove, toggle } from '../modules/todos';
+import React from "react";
 import {
   Checkbox,
   IconButton,
@@ -8,20 +6,19 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-} from '@mui/material';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import { DeleteOutlined } from '@mui/icons-material';
+} from "@mui/material";
+import { DeleteOutlined } from "@mui/icons-material";
 
 export function useTodos() {}
 
-const Todos = ({ item, onRemove, onToggle, offReadOnlyMode, onUpdate }) => {
+const Todos = ({ item, onRemove, onToggle, offReadOnlyMode }) => {
   return (
     <ListItem>
-      <Checkbox checked={item.done} onChange={() => onToggle(item.id)} />
+      <Checkbox checked={item.done} onChange={() => onToggle(item)} />
       <ListItemText>
         <InputBase
           inputProps={{
-            'aria-label': 'naked',
+            "aria-label": "naked",
           }}
           type="text"
           id={item.id}
