@@ -62,6 +62,7 @@ const App = () => {
       console.error(error);
     },
   });
+  
   const onRemove = useCallback(
     async (id) => {
       await removeTodo.mutate(id);
